@@ -1,217 +1,198 @@
 # Data Vortex 2026 — Social Engine
 
-Data cleaning, data quality analysis, exploratory data analysis, SQL-based analytical investigation, and NLP-based semantic analysis for the **Data Vortex 2026 Social Engine recovery challenge**.
+Data cleaning, exploratory analysis, SQL investigation, NLP-based semantic analysis, and cybersecurity incident analysis for the **Data Vortex 2026 Social Engine recovery challenge**.
 
-## Project Overview
+## Project overview
 
-The project focuses on recovering and analysing the Social Engine across multiple stages, from corrupted structured data to NLP-based semantic understanding.
+The project reconstructs the Social Engine across three stages:
 
-The complete workflow includes:
+- Structured data cleaning and EDA
+- SQL-based analytical investigation
+- NLP semantic understanding
+- Real-world cybersecurity incident analysis
 
-- Raw data auditing
-- Duplicate detection and handling
-- Missing-value investigation
-- Invalid-value correction
-- Timestamp standardisation
-- Text and HTML cleaning
-- User-level validation
-- Exploratory Data Analysis (EDA)
-- Final data quality checks
-- Relational database design
-- Analytical SQL queries
-- Behavioural and anomaly analysis
-- Insight reporting
-- NLP text preprocessing
-- Sentiment classification
-- Topic classification
-- Model comparison and evaluation
-- Error analysis and explainability
-
-## Project Status
+## Project status
 
 **Round 1 — Phase 1: Data Cleaning & EDA: Completed** ✅  
 **Round 1 — Phase 2: SQL Analysis & Insight Report: Completed** ✅  
-**Round 2: NLP Semantic Understanding: Completed** ✅
+**Round 2: NLP Semantic Understanding: Completed** ✅  
+**Round 3: Cybersecurity Incident Analysis: Completed** ✅
 
-## Round 1 — Dataset
+---
 
-The project uses two raw datasets:
+# Round 1 — Data Cleaning & EDA
+
+The project uses:
 
 - `Social_Engine_Posts_Corrupted.csv`
 - `Social_Engine_Users.csv`
 
-The final processed dataset is:
+The cleaned dataset contains **12,000 posts from 1,500 users**.
 
-- `Social_Engine_Posts_Cleaned.csv`
+The cleaning workflow included:
 
-The cleaned Posts dataset contains **12,000 posts from 1,500 users**.
+1. Raw-data auditing
+2. Duplicate detection
+3. Missing-value investigation
+4. Timestamp standardisation
+5. Invalid-value correction
+6. Text and HTML cleaning
+7. User-level validation
+8. Final quality checks
 
----
+EDA covered platform distribution, engagement, correlations, temporal activity, user activity, and outliers.
 
-# Phase 1 — Data Cleaning & EDA
+### Key findings
 
-The Posts dataset was cleaned through the following stages:
-
-1. Load raw data
-2. Create raw-data audit
-3. Handle exact duplicates
-4. Standardise timestamps
-5. Investigate missing values
-6. Fix invalid numerical values
-7. Clean text and HTML artifacts
-8. Validate against the Users dataset
-9. Perform final quality checks
-10. Export the cleaned dataset
-
-Unrecoverable missing values were retained as missing rather than replaced with fabricated values.
-
-### Exploratory Data Analysis
-
-EDA was performed on the cleaned dataset to analyse:
-
-- Platform distribution
-- Engagement distributions
-- Engagement by platform
-- Correlation between engagement metrics
-- Monthly posting activity
-- Hourly posting activity
-- Engagement over time
-- User posting activity
-- Engagement outliers
-
-### Phase 1 Key Findings
-
-- The five known platforms have relatively balanced post volumes.
-- Likes, shares, and comments show almost no linear correlation.
-- No single platform consistently leads across all engagement metrics.
-- Monthly posting activity remains relatively stable.
-- Average engagement remains relatively stable over time.
-- All 1,500 users have at least one corresponding post.
-- No IQR-based statistical outliers were identified in the engagement metrics.
+- Platform post volumes were relatively balanced.
+- Likes, shares, and comments showed very low linear correlation.
+- No single platform consistently led across all engagement metrics.
+- Monthly activity remained relatively stable.
+- All 1,500 users had corresponding posts.
+- No IQR-based engagement outliers were identified.
 
 ---
 
-# Phase 2 — SQL Analytical Investigation
+# Round 1 — Phase 2: SQL Analysis
 
-The cleaned dataset was structured into relational **PostgreSQL** tables:
+The cleaned data was structured into PostgreSQL `users` and `posts` tables and analysed using joins, aggregations, CTEs, filters, and window functions.
 
-- `users` — user-level information and follower counts
-- `posts` — post-level activity and engagement metrics
+### E2 — Most Engaged Posts
 
-The tables are connected using `user_id`, allowing user-level and post-level information to be analysed together.
+Total engagement was defined as:
 
-The Phase 2 analysis uses SQL joins, aggregations, CTEs, filtering, and window functions.
+`Likes + Shares + Comments`
 
-### Analytical Challenges
+The top 10 posts had engagement between **7,610 and 7,893**, with the highest reaching **7,893**.
 
-#### E2 — Most Engaged Posts
+### M4 — High-Follower Platform Behaviour
 
-Identified the **top 10 posts by total engagement**, where:
+For users with at least 30,000 followers, **Instagram** recorded the highest average engagement per post at **4,144.59**.
 
-`Total Engagement = Likes + Shares + Comments`
+### H4 — Follower-to-Engagement Analysis
 
-Posts with missing likes were excluded to avoid fabricating engagement values.
+**17 users** had fewer than 5,000 followers while falling within the top 10% of users by total engagement. The highest-engagement account in this group had **2,211 followers and 58,480 total engagement**.
 
-**Finding:** The top 10 posts recorded total engagement between **7,610 and 7,893**, with the highest-engagement post reaching **7,893**.
-
-#### M4 — Platform Behaviour by High Follower Users
-
-Compared average engagement per post across platforms for users with **at least 30,000 followers**.
-
-**Finding:** **Instagram** recorded the highest average engagement per post at **4,144.59**, while the platform averages remained relatively close overall.
-
-#### H4 — Follower to Engagement Anomaly
-
-Identified users with **fewer than 5,000 followers** whose total engagement falls within the **top 10% of all users**.
-
-**Finding:** **17 users** satisfied both conditions. The highest-engagement account in this group had **2,211 followers and 58,480 total engagement**, highlighting a significant follower-to-engagement imbalance.
-
-These results identify potentially unusual high-performing accounts but do not independently establish suspicious activity.
+These results identify unusual engagement patterns but do not independently establish suspicious activity.
 
 ---
 
 # Round 2 — NLP Semantic Understanding
 
-Round 2 focuses on rebuilding the Social Engine's failed **semantic understanding layer**, which was unable to properly understand the meaning, tone, and intent of human language. The provided labelled textual dataset was used to rebuild this NLP-driven module. :contentReference[oaicite:0]{index=0}
+Round 2 rebuilt the Social Engine's semantic analysis layer using the provided **9,000-record labelled NLP dataset**.
 
-### Dataset
+### Tasks
 
-The NLP dataset contains:
-
-- **9,000 text records**
-- `text_id`
-- `post_text`
-- `sentiment_label`
-- `topic_category`
-
-Two classification tasks were performed:
-
-**Sentiment Classification**
+**Sentiment**
 - Negative
 - Neutral
 - Positive
 
-**Topic Classification**
+**Topic**
 - Account_Security
 - Community_Discussion
 - Feature_Feedback
 - Technical_Issues
 
-### NLP Pipeline
+### NLP pipeline
 
-The NLP workflow included:
+- Text normalization
+- URL and mention removal
+- Hashtag normalization
+- TF-IDF feature extraction
+- Group-aware 75:25 train-test split
+- Multiple model comparisons
+- Confusion-matrix analysis
+- Error analysis
+- TF-IDF coefficient-based explainability
 
-1. Dataset quality assessment
-2. Duplicate-text investigation
-3. Text normalization
-4. URL and mention removal
-5. Hashtag normalization
-6. Special-character removal while preserving alphanumeric tokens
-7. Whitespace normalization
-8. TF-IDF feature extraction
-9. Group-aware 75:25 train-test splitting
-10. Lightweight machine-learning model evaluation
-11. Deep-learning model evaluation
-12. Confusion-matrix analysis
-13. Error analysis
-14. TF-IDF coefficient-based explainability
-
-Because repeated text entries were present, the train-test split was grouped by cleaned text to prevent identical texts from appearing in both sets.
-
-### Models Evaluated
-
-- TF-IDF + Logistic Regression
-- Improved TF-IDF + Logistic Regression
-- VADER
-- Multinomial Naive Bayes
-- Linear SVM
-- Simple Deep Learning
-- BiLSTM
-
-### Final Selected Models
-
-**Sentiment:** TF-IDF + Logistic Regression  
-**Topic:** TF-IDF + Linear SVM
-
-Final test performance:
+### Final models
 
 | Task | Model | Accuracy | Macro F1 |
 |---|---|---:|---:|
 | Sentiment | TF-IDF + Logistic Regression | 0.5734 | 0.5730 |
 | Topic | TF-IDF + Linear SVM | 0.9349 | 0.6706 |
 
-The topic dataset was highly imbalanced, with **Community_Discussion accounting for 86.13%** of the records. Therefore, macro F1 and class-wise metrics were used alongside accuracy to evaluate minority-class performance. :contentReference[oaicite:1]{index=1}
+The topic dataset was highly imbalanced, with `Community_Discussion` representing **86.13%** of the records.
 
-### Round 2 Error Analysis
+Major errors included Neutral → Negative sentiment confusion and minority topic classes being frequently classified as `Community_Discussion`.
 
-The major observed error patterns were:
+---
 
-- Sentiment predictions showed substantial confusion involving the **Neutral** class.
-- The largest sentiment confusion was **Neutral → Negative (189 cases)**.
-- The largest topic confusion was **Technical_Issues → Community_Discussion (65 cases)**.
-- **Feature_Feedback → Community_Discussion** occurred in 45 cases.
-- Minority topic classes were more frequently misclassified as the dominant `Community_Discussion` class.
-- TF-IDF coefficients provided feature-level information about the statistical associations learned by the linear models.
+# Round 3 — Cybersecurity Incident Analysis
+
+Round 3 extends the Social Engine to a self-collected real-world dataset focused on the **Boston Scientific cybersecurity incident**.
+
+### Data collection
+
+Sources:
+
+- **X (Twitter)** — collected using XPorter
+- **Google News** — collected using Google News RSS
+
+The collection and preparation pipeline is:
+
+`src/round3/round3_data_pipeline.py`
+
+The pipeline collects, filters, standardises, combines, validates, and exports the Round 3 data.
+
+### Dataset
+
+Final Round 3 dataset:
+
+- **190 records**
+- **93 X posts**
+- **97 Google News records**
+- Time window: **26 August 2026 – 20 September 2026**
+
+Required schema:
+
+`text_id, source, post_text, timestamp, likes, comments, shares, sentiment_label, topic_category`
+
+Google News engagement fields were retained as missing because the RSS source did not provide them.
+
+### Sentiment analysis
+
+| Sentiment | Records | Percentage |
+|---|---:|---:|
+| Negative | 61 | 32.11% |
+| Neutral | 96 | 50.53% |
+| Positive | 33 | 17.37% |
+
+The two highest-volume dates were **26 August (44 records)** and **8 September (50 records)**. Model-classified Negative sentiment increased from **22.73% to 36.00%** between these periods.
+
+### Activity analysis
+
+| Date | X Posts | Likes | Comments | Shares | Total Engagement |
+|---|---:|---:|---:|---:|---:|
+| 2026-09-08 | 29 | 237 | 43 | 53 | 333 |
+| 2026-08-26 | 22 | 143 | 40 | 84 | 267 |
+
+The mean daily X engagement was **43.50**, with 8 September reaching approximately **7.66× the mean**.
+
+### Topic and entity analysis
+
+Major discussion themes included:
+
+| Theme | Records | Percentage |
+|---|---:|---:|
+| Cyberattack & Cybersecurity | 189 | 99.47% |
+| Operational Disruption | 90 | 47.37% |
+| Financial Impact | 76 | 40.00% |
+| Shipping & Medical Devices | 57 | 30.00% |
+| Patient & Service Impact | 10 | 5.26% |
+
+The discussion broadly progressed from:
+
+`Cybersecurity incident → Operational disruption → Shipping/medical-device impact → Financial impact → Technical/service recovery`
+
+### Limitations
+
+- Round 3 contains 190 records, limiting detailed temporal analysis.
+- Engagement metrics were available only for X.
+- Sentiment predictions are based on a moderate-performing Round 2 model.
+- Topic predictions were strongly influenced by the dominant `Community_Discussion` class.
+- Temporal associations do not establish direct causation.
 
 ---
 
@@ -221,39 +202,39 @@ The major observed error patterns were:
 data-vortex-social-engine/
 │
 ├── README.md
-│
 ├── data/
 │   ├── raw/
 │   │   ├── Social_Engine_Posts_Corrupted.csv
-        ├── Social_Engine_Users.csv
-│   │   └── Labeled_Social_NLP_Training_Data
-│   │
+│   │   ├── Social_Engine_Users.csv
+│   │   ├── Labeled_Social_NLP_Training_Data
+│   │   └── round3/
+│   │       ├── x_collection.csv
+│   │       └── news_raw.csv
 │   └── cleaned/
-│       └── Social_Engine_Posts_Cleaned.csv
+│       ├── Social_Engine_Posts_Cleaned.csv
+│       └── round3/
+│           ├── x_clean.csv
+│           ├── round3_raw_combined.csv
+│           ├── round3_dataset_for_eda.csv
+│           └── Tekton_Round3_Final_Dataset.csv
 │
 ├── notebooks/
 │   ├── 01_posts_data_cleaning.ipynb
 │   ├── 02_posts_eda.ipynb
-│   └── Tekton_Round2_Social_Engine_NLP_Analytics.ipynb
+│   ├── Tekton_Round2_Social_Engine_NLP_Analytics.ipynb
+│   └── Tekton_Round3_Cybersecurity_Incident_Analysis.ipynb
 │
 ├── src/
-│   └── cleaning/
-│       └── posts_cleaning.py
+│   ├── cleaning/
+│   │   └── posts_cleaning.py
+│   └── round3/
+│       └── round3_data_pipeline.py
 │
 ├── sql/
 │   ├── schema.sql
 │   ├── E2/
-│   │   ├── E2_query.sql
-│   │   └── E2_output.png
-│   │
 │   ├── M4/
-│   │   ├── M4_query.sql
-│   │   └── M4_output.png
-│   │
 │   └── H4/
-│       ├── H4_01_query.sql
-│       ├── H4_02_query.sql
-│       └── H4_output.png
 │
 ├── models/
 │   └── Tekton_Round2_Final_NLP_Models.pkl
@@ -262,4 +243,5 @@ data-vortex-social-engine/
     ├── Social_Engine_Posts_EDA_Report.pdf
     ├── Phase_02_Insight_Report.pdf
     ├── Evaluation_Metrics_Report.pdf
-    └── Round_02_Technical_Report.pdf
+    ├── Round_02_Technical_Report.pdf
+    └── Round_03_Analytical_Report.pdf
